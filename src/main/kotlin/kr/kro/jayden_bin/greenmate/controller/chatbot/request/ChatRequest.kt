@@ -14,6 +14,7 @@ enum class SenderType {
     ;
 
     companion object {
+        @JvmStatic
         @JsonCreator
         fun fromString(value: String): SenderType =
             value.uppercase(Locale.KOREAN).let { upperValue -> entries.first { it.name == upperValue } }

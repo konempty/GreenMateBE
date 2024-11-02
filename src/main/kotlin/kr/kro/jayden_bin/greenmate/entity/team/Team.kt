@@ -44,13 +44,13 @@ class Team(
 @Embeddable
 class Area(
     @Column(nullable = true)
-    val type: AreaType,
+    val type: AreaType? = null,
     @Column(nullable = true)
-    val latitude: Double?,
+    val latitude: Double? = null,
     @Column(nullable = true)
-    val longitude: Double?,
+    val longitude: Double? = null,
     @Column(nullable = true)
-    val radius: Double?,
+    val radius: Double? = null,
     @Column(nullable = true, columnDefinition = "SDO_GEOMETRY")
-    val points: Polygon?,
+    val points: Polygon? = null,
 )
