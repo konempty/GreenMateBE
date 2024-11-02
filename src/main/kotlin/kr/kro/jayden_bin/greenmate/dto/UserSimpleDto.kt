@@ -8,14 +8,11 @@ data class UserSimpleDto(
     val profileImageUrl: String,
 ) {
     companion object {
-        fun of(
-            user: User,
-            defaultProfile: String,
-        ): UserSimpleDto =
+        fun of(user: User): UserSimpleDto =
             UserSimpleDto(
                 id = user.id,
                 nickName = user.nickName,
-                profileImageUrl = user.profileImageUrl ?: defaultProfile,
+                profileImageUrl = user.profileImageName,
             )
     }
 }

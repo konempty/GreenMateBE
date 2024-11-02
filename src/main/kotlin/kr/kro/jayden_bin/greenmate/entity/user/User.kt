@@ -26,12 +26,5 @@ class User(
     @Column(length = 100, nullable = false)
     val password: String,
     @Column(length = 255, nullable = false)
-    val profileImageUrl: String?,
-) : BaseTimeEntity() {
-    constructor() : this(
-        nickName = "",
-        email = "",
-        password = "",
-        profileImageUrl = null,
-    )
-}
+    val profileImageName: String,
+) : BaseTimeEntity()

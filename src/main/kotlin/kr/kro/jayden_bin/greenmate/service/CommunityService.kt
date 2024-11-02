@@ -58,15 +58,14 @@ class CommunityService(
     }
 
     @Transactional(readOnly = true)
-    fun getCommunityList(): List<CommunityListResponse> {
-        val defaultProfile = imageService.getDownloadUrl("defaultProfile.png")
-        return communityRepository.findAll().map { community ->
+    fun getCommunityList(): List<CommunityListResponse> =
+        communityRepository.findAll().map { community ->
             val images = communityImageRepository.findByCommunity(community)
             CommunityListResponse(
                 id = community.id,
                 title = community.title,
                 description = community.description,
-                user = UserSimpleDto.of(community.user, defaultProfile),
+                user = UserSimpleDto.of(community.user),
                 imageUrls =
                     images.map {
                         imageService.getDownloadUrl(it.fileName)
@@ -76,17 +75,15 @@ class CommunityService(
                 createdAt = community.createdAt,
             )
         }
-    }
 
     @Transactional(readOnly = true)
     fun getCommunityDetail(communityId: Long): CommunityDetailResponse {
         val community = communityRepository.findById(communityId).get()
-        val defaultProfile = imageService.getDownloadUrl("defaultProfile.png")
         return CommunityDetailResponse(
             id = community.id,
             title = community.title,
             description = community.description,
-            user = UserSimpleDto.of(community.user, defaultProfile),
+            user = UserSimpleDto.of(community.user),
             imageUrls =
                 communityImageRepository.findByCommunity(community).map {
                     imageService.getDownloadUrl(it.fileName)
@@ -100,7 +97,7 @@ class CommunityService(
                         id = it.id,
                         content = it.content,
                         createdAt = it.createdAt,
-                        user = UserSimpleDto.of(it.user, defaultProfile),
+                        user = UserSimpleDto.of(it.user),
                     )
                 },
         )
