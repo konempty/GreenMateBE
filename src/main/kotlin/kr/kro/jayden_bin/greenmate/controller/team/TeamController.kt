@@ -9,7 +9,6 @@ import kr.kro.jayden_bin.greenmate.controller.team.response.TeamRecruitmentListR
 import kr.kro.jayden_bin.greenmate.entity.user.User
 import kr.kro.jayden_bin.greenmate.service.TeamService
 import org.springframework.http.HttpStatus.CREATED
-import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -42,11 +41,11 @@ class TeamController(
 
     @GetMapping("/{recruitmentId}")
     fun getTeamRecruitmentDetail(
+        user: User,
         @PathVariable
         recruitmentId: Long,
-    ): TeamRecruitmentDetailResponse = teamService.getTeamRecruitmentDetail(recruitmentId)
+    ): TeamRecruitmentDetailResponse = teamService.getTeamRecruitmentDetail(recruitmentId, user)
 
-    @ResponseStatus(NO_CONTENT)
     @PostMapping("/{recruitmentId}/join")
     fun joinTeamRecruitment(
         user: User,

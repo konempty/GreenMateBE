@@ -11,5 +11,10 @@ interface TeamJoinRepository : JpaRepository<TeamJoin, Long> {
         user: User,
     ): TeamJoin?
 
+    fun existsByTeamAndUser(
+        team: Team,
+        user: User,
+    ): Boolean
+
     fun countByTeam(community: Team): Int
 }

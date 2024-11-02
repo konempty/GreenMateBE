@@ -43,7 +43,7 @@ class Team(
 
 @Embeddable
 class Area(
-    @Column(nullable = false)
+    @Column(nullable = true)
     val type: AreaType,
     @Column(nullable = true)
     val latitude: Double?,

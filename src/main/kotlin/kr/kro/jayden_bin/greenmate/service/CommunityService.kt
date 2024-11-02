@@ -75,7 +75,7 @@ class CommunityService(
                 id = community.id,
                 title = community.title,
                 description = community.description,
-                user = UserSimpleDto.of(community.user),
+                user = UserSimpleDto.of(community.user, imageService.getDownloadUrl(community.user.profileImageName)),
                 imageUrls =
                     images.map {
                         imageService.getDownloadUrl(it.fileName)
@@ -93,7 +93,7 @@ class CommunityService(
             id = community.id,
             title = community.title,
             description = community.description,
-            user = UserSimpleDto.of(community.user),
+            user = UserSimpleDto.of(community.user, imageService.getDownloadUrl(community.user.profileImageName)),
             imageUrls =
                 communityImageRepository
                     .findByCommunity(community)
@@ -112,7 +112,7 @@ class CommunityService(
                         id = it.id,
                         content = it.content,
                         createdAt = it.createdAt,
-                        user = UserSimpleDto.of(it.user),
+                        user = UserSimpleDto.of(it.user, imageService.getDownloadUrl(it.user.profileImageName)),
                     )
                 },
         )
@@ -127,10 +127,10 @@ class CommunityService(
         val like = communityLikeRepository.findByCommunityAndUser(community, user)
         if (like != null) {
             communityLikeRepository.delete(like)
-            return CommunityLikeResponse(communityLikeRepository.countByCommunity(community) - 1, false)
+            return CommunityLikeResponse(communityLikeRepository.countByCommunity(community), false)
         } else {
             communityLikeRepository.save(CommunityLike(user = user, community = community))
-            return CommunityLikeResponse(communityLikeRepository.countByCommunity(community) + 1, true)
+            return CommunityLikeResponse(communityLikeRepository.countByCommunity(community), true)
         }
     }
 

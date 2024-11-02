@@ -30,10 +30,10 @@ class UserService(
         profileImage: MultipartFile?,
     ): ServiceTokensResponse {
         if (userRepository.existsByNickname(signUpRequest.nickname)) {
-            throw IllegalArgumentException("Nickname is already in use")
+            throw IllegalArgumentException("사용중인 닉네임입니다")
         }
         if (userRepository.existsByEmail(signUpRequest.email)) {
-            throw IllegalArgumentException("Email is already in use")
+            throw IllegalArgumentException("사용중인 이메일입니다")
         }
         val fileName = profileImage?.let { imageService.generateImageName(it) } ?: "defaultProfile.png"
         val hashedPassword = passwordEncoder.encode(signUpRequest.password) // 비밀번호 해싱
@@ -54,7 +54,7 @@ class UserService(
     fun login(request: LoginRequest): ServiceTokensResponse {
         val user =
             userRepository.findByEmail(request.email)?.takeIf { passwordEncoder.matches(request.password, it.password) }
-                ?: throw IllegalArgumentException("Invalid email or password")
+                ?: throw IllegalArgumentException("잘못된 이메일 또는 비밀번호입니다")
         return makeTokens(user)
     }
 
@@ -64,7 +64,7 @@ class UserService(
             jwtUtil.validateToken(jwtUtil.refreshKey, refreshToken) &&
                 jwtUtil.validateCachedRefreshTokenRotateId(refreshToken),
         ) {
-            throw IllegalArgumentException("Invalid refresh token")
+            throw IllegalArgumentException("유효하지 않은 토큰입니다")
         }
         val userId = jwtUtil.getUserId(jwtUtil.refreshKey, refreshToken)
         val user = userRepository.findById(userId).get()

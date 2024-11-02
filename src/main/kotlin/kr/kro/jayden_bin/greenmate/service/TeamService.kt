@@ -90,7 +90,7 @@ class TeamService(
                 title = it.title,
                 description = it.description,
                 dueDate = it.dueDate,
-                jointCount = teamJoinRepository.countByTeam(it),
+                joinCount = teamJoinRepository.countByTeam(it),
                 status =
                     if (it.dueDate.isBefore(LocalDateTime.now())) {
                         TeamRecruitmentStatus.CLOSED
@@ -103,7 +103,10 @@ class TeamService(
         }
 
     @Transactional(readOnly = true)
-    fun getTeamRecruitmentDetail(recruitmentId: Long): TeamRecruitmentDetailResponse {
+    fun getTeamRecruitmentDetail(
+        recruitmentId: Long,
+        user: User,
+    ): TeamRecruitmentDetailResponse {
         val team = teamRepository.findById(recruitmentId).get()
         return TeamRecruitmentDetailResponse(
             id = team.id,
@@ -130,15 +133,18 @@ class TeamService(
                     .map {
                         CompletableFuture.supplyAsync { imageService.getDownloadUrl(it.fileName) }
                     }.map { it.join() },
+            user = UserSimpleDto.of(team.user, imageService.getDownloadUrl(team.user.profileImageName)),
             comments =
                 teamCommentRepository.findByTeam(team).map {
                     CommentDto(
                         id = it.id,
-                        user = UserSimpleDto.of(it.user),
+                        user = UserSimpleDto.of(it.user, imageService.getDownloadUrl(it.user.profileImageName)),
                         content = it.content,
                         createdAt = it.createdAt,
                     )
                 },
+            joinCount = teamJoinRepository.countByTeam(team),
+            isJoined = teamJoinRepository.existsByTeamAndUser(team, user),
         )
     }
 
@@ -152,13 +158,13 @@ class TeamService(
         if (teamJoin != null) {
             teamJoinRepository.delete(teamJoin)
             return TeamJoinResponse(
-                joinCount = teamJoinRepository.countByTeam(team) - 1,
+                joinCount = teamJoinRepository.countByTeam(team),
                 isJoin = false,
             )
         } else {
             teamJoinRepository.save(TeamJoin(team = team, user = user))
             return TeamJoinResponse(
-                joinCount = teamJoinRepository.countByTeam(team) + 1,
+                joinCount = teamJoinRepository.countByTeam(team),
                 isJoin = true,
             )
         }

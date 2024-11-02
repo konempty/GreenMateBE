@@ -4,15 +4,18 @@ import kr.kro.jayden_bin.greenmate.entity.user.User
 
 data class UserSimpleDto(
     val id: Long,
-    val nickName: String,
+    val nickname: String,
     val profileImageUrl: String,
 ) {
     companion object {
-        fun of(user: User): UserSimpleDto =
+        fun of(
+            user: User,
+            profileImageUrl: String,
+        ): UserSimpleDto =
             UserSimpleDto(
                 id = user.id,
-                nickName = user.nickname,
-                profileImageUrl = user.profileImageName,
+                nickname = user.nickname,
+                profileImageUrl = profileImageUrl,
             )
     }
 }

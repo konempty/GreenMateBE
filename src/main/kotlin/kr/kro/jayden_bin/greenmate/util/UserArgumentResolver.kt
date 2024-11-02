@@ -2,6 +2,7 @@ package kr.kro.jayden_bin.greenmate.util
 
 import kr.kro.jayden_bin.greenmate.entity.user.User
 import kr.kro.jayden_bin.greenmate.exceptions.HttpException
+import kr.kro.jayden_bin.greenmate.service.SecurityUser
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
@@ -21,8 +22,8 @@ class UserArgumentResolver : HandlerMethodArgumentResolver {
     ): User {
         val authentication = SecurityContextHolder.getContext().authentication
 
-        return if (authentication.isAuthenticated && authentication.principal is User) {
-            authentication.principal as User
+        return if (authentication.isAuthenticated && authentication.principal is SecurityUser) {
+            (authentication.principal as SecurityUser).user
         } else {
             throw HttpException(HttpStatus.UNAUTHORIZED, "인증정보가 없습니다.")
         }
