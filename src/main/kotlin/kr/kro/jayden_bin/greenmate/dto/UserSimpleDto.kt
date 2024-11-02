@@ -11,7 +11,7 @@ data class UserSimpleDto(
         fun of(user: User): UserSimpleDto =
             UserSimpleDto(
                 id = user.id,
-                nickName = user.nickName,
+                nickName = user.nickname,
                 profileImageUrl = user.profileImageName,
             )
     }

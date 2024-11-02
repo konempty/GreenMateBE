@@ -20,7 +20,7 @@ class User(
     @Column(updatable = false, nullable = false)
     val id: Long = 0L,
     @Column(length = 30, nullable = false, updatable = false, unique = true)
-    val nickName: String,
+    val nickname: String,
     @Column(length = 50, nullable = false, updatable = false, unique = true)
     val email: String,
     @Column(length = 100, nullable = false)
