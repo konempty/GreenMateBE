@@ -23,5 +23,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - green-mat-api.jayden-bin.kro.kr
+        - green-mate-api.jayden-bin.kro.kr
       secretName: star-jayden-bin-kro-kr
