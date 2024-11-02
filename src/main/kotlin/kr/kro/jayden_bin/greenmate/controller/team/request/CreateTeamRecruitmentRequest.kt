@@ -11,13 +11,3 @@ data class CreateTeamRecruitmentRequest(
     val dueDate: LocalDateTime,
     val area: AreaDto?,
 )
-
-data class Point(
-    val latitude: Double,
-    val longitude: Double,
-)
-
-enum class AreaType {
-    CIRCLE,
-    POLYGON,
-}

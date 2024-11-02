@@ -1,7 +1,14 @@
 package kr.kro.jayden_bin.greenmate.dto
 
-import kr.kro.jayden_bin.greenmate.controller.team.request.AreaType
-import kr.kro.jayden_bin.greenmate.controller.team.request.Point
+data class Point(
+    val latitude: Double,
+    val longitude: Double,
+)
+
+enum class AreaType {
+    CIRCLE,
+    POLYGON,
+}
 
 data class AreaDto(
     val type: AreaType?,

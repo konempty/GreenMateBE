@@ -12,7 +12,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
-import kr.kro.jayden_bin.greenmate.controller.team.request.AreaType
+import kr.kro.jayden_bin.greenmate.dto.AreaType
 import kr.kro.jayden_bin.greenmate.entity.BaseTimeEntity
 import kr.kro.jayden_bin.greenmate.entity.user.User
 import org.locationtech.jts.geom.Polygon
@@ -44,13 +44,13 @@ class Team(
 @Embeddable
 class Area(
     @Column(nullable = true)
-    val type: AreaType? = null,
+    val type: AreaType?,
     @Column(nullable = true)
-    val latitude: Double? = null,
+    val latitude: Double?,
     @Column(nullable = true)
-    val longitude: Double? = null,
+    val longitude: Double?,
     @Column(nullable = true)
-    val radius: Double? = null,
+    val radius: Double?,
     @Column(nullable = true, columnDefinition = "SDO_GEOMETRY")
-    val points: Polygon? = null,
+    val points: Polygon?,
 )

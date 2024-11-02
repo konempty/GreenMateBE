@@ -2,13 +2,13 @@ package kr.kro.jayden_bin.greenmate.service
 
 import kr.kro.jayden_bin.greenmate.controller.team.request.CreateTeamCommentRequest
 import kr.kro.jayden_bin.greenmate.controller.team.request.CreateTeamRecruitmentRequest
-import kr.kro.jayden_bin.greenmate.controller.team.request.Point
 import kr.kro.jayden_bin.greenmate.controller.team.response.TeamJoinResponse
 import kr.kro.jayden_bin.greenmate.controller.team.response.TeamRecruitmentDetailResponse
 import kr.kro.jayden_bin.greenmate.controller.team.response.TeamRecruitmentListResponse
 import kr.kro.jayden_bin.greenmate.controller.team.response.TeamRecruitmentStatus
 import kr.kro.jayden_bin.greenmate.dto.AreaDto
 import kr.kro.jayden_bin.greenmate.dto.CommentDto
+import kr.kro.jayden_bin.greenmate.dto.Point
 import kr.kro.jayden_bin.greenmate.dto.UserSimpleDto
 import kr.kro.jayden_bin.greenmate.entity.team.Area
 import kr.kro.jayden_bin.greenmate.entity.team.Team
