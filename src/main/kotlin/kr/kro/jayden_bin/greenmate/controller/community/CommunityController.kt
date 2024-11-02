@@ -39,13 +39,14 @@ class CommunityController(
     }
 
     @GetMapping
-    fun getCommunityList(): List<CommunityListResponse> = communityService.getCommunityList()
+    fun getCommunityList(user: User): List<CommunityListResponse> = communityService.getCommunityList(user)
 
     @GetMapping("/{communityId}")
     fun getCommunityDetail(
+        user: User,
         @PathVariable
         communityId: Long,
-    ): CommunityDetailResponse = communityService.getCommunityDetail(communityId)
+    ): CommunityDetailResponse = communityService.getCommunityDetail(communityId, user)
 
     @PostMapping("/{communityId}/like")
     fun likeCommunity(

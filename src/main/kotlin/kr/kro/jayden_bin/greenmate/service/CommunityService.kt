@@ -68,8 +68,8 @@ class CommunityService(
     }
 
     @Transactional(readOnly = true)
-    fun getCommunityList(): List<CommunityListResponse> =
-        communityRepository.findAll().map { community ->
+    fun getCommunityList(user: User): List<CommunityListResponse> =
+        communityRepository.findAllByOrderByCreatedAtDesc().map { community ->
             val images = communityImageRepository.findByCommunity(community)
             CommunityListResponse(
                 id = community.id,
@@ -83,11 +83,15 @@ class CommunityService(
                 likeCount = communityLikeRepository.countByCommunity(community),
                 commentCount = communityCommentRepository.countByCommunity(community),
                 createdAt = community.createdAt,
+                isLiked = communityLikeRepository.existsByCommunityAndUser(community, user),
             )
         }
 
     @Transactional(readOnly = true)
-    fun getCommunityDetail(communityId: Long): CommunityDetailResponse {
+    fun getCommunityDetail(
+        communityId: Long,
+        user: User,
+    ): CommunityDetailResponse {
         val community = communityRepository.findById(communityId).get()
         return CommunityDetailResponse(
             id = community.id,
@@ -115,6 +119,7 @@ class CommunityService(
                         user = UserSimpleDto.of(it.user, imageService.getDownloadUrl(it.user.profileImageName)),
                     )
                 },
+            isLiked = communityLikeRepository.existsByCommunityAndUser(community, user),
         )
     }
 

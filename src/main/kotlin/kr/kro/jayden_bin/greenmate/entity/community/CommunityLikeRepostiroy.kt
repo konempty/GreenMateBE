@@ -11,5 +11,10 @@ interface CommunityLikeRepository : JpaRepository<CommunityLike, Long> {
         user: User,
     ): CommunityLike?
 
+    fun existsByCommunityAndUser(
+        community: Community,
+        user: User,
+    ): Boolean
+
     fun countByCommunity(community: Community): Int
 }

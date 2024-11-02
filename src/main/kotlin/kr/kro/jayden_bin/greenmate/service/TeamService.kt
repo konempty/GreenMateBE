@@ -84,7 +84,7 @@ class TeamService(
 
     @Transactional(readOnly = true)
     fun getTeamRecruitmentList(): List<TeamRecruitmentListResponse> =
-        teamRepository.findAll().map {
+        teamRepository.findAllByOrderByCreatedAtDesc().map {
             TeamRecruitmentListResponse(
                 id = it.id,
                 title = it.title,
