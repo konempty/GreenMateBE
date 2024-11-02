@@ -1,7 +1,7 @@
 package kr.kro.jayden_bin.greenmate.controller.community
 
 import jakarta.validation.constraints.Size
-import kr.kro.jayden_bin.greenmate.controller.community.request.CommentRequest
+import kr.kro.jayden_bin.greenmate.controller.community.request.CreateCommunityCommentRequest
 import kr.kro.jayden_bin.greenmate.controller.community.request.CreateCommunityRequest
 import kr.kro.jayden_bin.greenmate.controller.community.response.CommunityDetailResponse
 import kr.kro.jayden_bin.greenmate.controller.community.response.CommunityLikeResponse
@@ -59,6 +59,6 @@ class CommunityController(
         @PathVariable
         communityId: Long,
         @RequestBody
-        request: CommentRequest,
+        request: CreateCommunityCommentRequest,
     ) = communityService.createComment(user, communityId, request)
 }

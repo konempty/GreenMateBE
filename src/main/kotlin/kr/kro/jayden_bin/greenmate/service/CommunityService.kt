@@ -1,11 +1,11 @@
 package kr.kro.jayden_bin.greenmate.service
 
-import kr.kro.jayden_bin.greenmate.controller.community.request.CommentRequest
+import kr.kro.jayden_bin.greenmate.controller.community.request.CreateCommunityCommentRequest
 import kr.kro.jayden_bin.greenmate.controller.community.request.CreateCommunityRequest
-import kr.kro.jayden_bin.greenmate.controller.community.response.CommentResponse
 import kr.kro.jayden_bin.greenmate.controller.community.response.CommunityDetailResponse
 import kr.kro.jayden_bin.greenmate.controller.community.response.CommunityLikeResponse
 import kr.kro.jayden_bin.greenmate.controller.community.response.CommunityListResponse
+import kr.kro.jayden_bin.greenmate.dto.CommentDto
 import kr.kro.jayden_bin.greenmate.dto.UserSimpleDto
 import kr.kro.jayden_bin.greenmate.entity.community.Community
 import kr.kro.jayden_bin.greenmate.entity.community.CommunityComment
@@ -19,6 +19,8 @@ import kr.kro.jayden_bin.greenmate.entity.user.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ExecutorService
 
 @Service
 class CommunityService(
@@ -27,6 +29,7 @@ class CommunityService(
     private val communityCommentRepository: CommunityCommentRepository,
     private val communityLikeRepository: CommunityLikeRepository,
     private val imageService: ImageService,
+    private val executor: ExecutorService,
 ) {
     @Transactional
     fun createCommunity(
@@ -52,9 +55,16 @@ class CommunityService(
                 )
             },
         )
-        generatorPhotoNameMap.forEach { (fileName, file) ->
-            imageService.upload(fileName, file)
-        }
+
+        generatorPhotoNameMap
+            .map {
+                CompletableFuture.supplyAsync({
+                    imageService.upload(
+                        it.key,
+                        it.value,
+                    )
+                }, executor)
+            }.forEach { it.join() }
     }
 
     @Transactional(readOnly = true)
@@ -85,15 +95,20 @@ class CommunityService(
             description = community.description,
             user = UserSimpleDto.of(community.user),
             imageUrls =
-                communityImageRepository.findByCommunity(community).map {
-                    imageService.getDownloadUrl(it.fileName)
-                },
+                communityImageRepository
+                    .findByCommunity(community)
+                    .map {
+                        CompletableFuture
+                            .supplyAsync({
+                                imageService.getDownloadUrl(it.fileName)
+                            }, executor)
+                    }.map { it.join() },
             likeCount = communityLikeRepository.countByCommunity(community),
             commentCount = communityCommentRepository.countByCommunity(community),
             createdAt = community.createdAt,
             comments =
                 communityCommentRepository.findByCommunity(community).map {
-                    CommentResponse(
+                    CommentDto(
                         id = it.id,
                         content = it.content,
                         createdAt = it.createdAt,
@@ -123,7 +138,7 @@ class CommunityService(
     fun createComment(
         user: User,
         communityId: Long,
-        request: CommentRequest,
+        request: CreateCommunityCommentRequest,
     ) {
         val community = communityRepository.findById(communityId).get()
         communityCommentRepository.save(

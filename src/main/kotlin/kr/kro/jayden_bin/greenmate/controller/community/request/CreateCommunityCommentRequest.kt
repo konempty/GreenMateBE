@@ -1,5 +1,5 @@
 package kr.kro.jayden_bin.greenmate.controller.community.request
 
-data class CommentRequest(
+data class CreateCommunityCommentRequest(
     val content: String,
 )

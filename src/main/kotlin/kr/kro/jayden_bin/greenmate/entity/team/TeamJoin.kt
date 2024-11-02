@@ -1,4 +1,4 @@
-package kr.kro.jayden_bin.greenmate.entity.community
+package kr.kro.jayden_bin.greenmate.entity.team
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -10,24 +10,22 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
-import kr.kro.jayden_bin.greenmate.entity.BaseTimeEntity
 import kr.kro.jayden_bin.greenmate.entity.user.User
 
 @Entity
 @Table(
-    name = "communities",
+    name = "team_joins",
 )
-@SequenceGenerator(name = "COMMUNITY_SEQ_GENERATOR", sequenceName = "COMMUNITY_SEQ", initialValue = 1, allocationSize = 1)
-class Community(
+@SequenceGenerator(name = "TEAM_JOIN_SEQ_GENERATOR", sequenceName = "TEAM_JOIN_SEQ", initialValue = 1, allocationSize = 1)
+class TeamJoin(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMUNITY_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TEAM_IMAGE_SEQ_GENERATOR")
     @Column(updatable = false, nullable = false)
     val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", updatable = false)
+    val team: Team,
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", updatable = false)
     val user: User,
-    @Column(length = 50, nullable = false, updatable = false, unique = true)
-    val title: String,
-    @Column(nullable = false, columnDefinition = "TEXT")
-    val description: String,
-) : BaseTimeEntity()
+)

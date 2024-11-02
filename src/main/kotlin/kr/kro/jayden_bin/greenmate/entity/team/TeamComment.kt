@@ -1,4 +1,4 @@
-package kr.kro.jayden_bin.greenmate.entity.community
+package kr.kro.jayden_bin.greenmate.entity.team
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -15,19 +15,20 @@ import kr.kro.jayden_bin.greenmate.entity.user.User
 
 @Entity
 @Table(
-    name = "communities",
+    name = "team_comments",
 )
-@SequenceGenerator(name = "COMMUNITY_SEQ_GENERATOR", sequenceName = "COMMUNITY_SEQ", initialValue = 1, allocationSize = 1)
-class Community(
+@SequenceGenerator(name = "TEAM_COMMENT_SEQ_GENERATOR", sequenceName = "TEAM_COMMENT_SEQ", initialValue = 1, allocationSize = 1)
+class TeamComment(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMUNITY_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TEAM_COMMENT_SEQ_GENERATOR")
     @Column(updatable = false, nullable = false)
     val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", updatable = false)
     val user: User,
-    @Column(length = 50, nullable = false, updatable = false, unique = true)
-    val title: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", updatable = false)
+    val team: Team,
     @Column(nullable = false, columnDefinition = "TEXT")
-    val description: String,
+    val content: String,
 ) : BaseTimeEntity()
