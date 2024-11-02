@@ -19,11 +19,11 @@ import kr.kro.jayden_bin.greenmate.entity.BaseTimeEntity
 @SequenceGenerator(name = "LEARNING_STEP_SEQ_GENERATOR", sequenceName = "LEARNING_STEP_SEQ", initialValue = 1, allocationSize = 1)
 class LearningStep(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LEARNING_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LEARNING_STEP_SEQ_GENERATOR")
     @Column(updatable = false, nullable = false)
     val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "learning_id", updatable = false)
+    @JoinColumn(name = "learning_id", updatable = false, nullable = false)
     val learning: Learning,
     @Column(length = 255, nullable = false, updatable = false)
     val content: String,

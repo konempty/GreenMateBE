@@ -40,13 +40,16 @@ class SecurityConfig(
 
     @Bean
     fun bcryptPasswordEncoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
-}
 
-val PERMITTED_URL_PATTERNS =
-    arrayOf(
-        "/health",
-        "/ready",
-        "/swagger-ui/**",
-        "/v3/api-docs/**",
-        "/api/v1/users/**",
-    )
+    companion object {
+        private val PERMITTED_URL_PATTERNS =
+            arrayOf(
+                "/health",
+                "/ready",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/api/v1/users",
+                "/api/v1/users/**",
+            )
+    }
+}

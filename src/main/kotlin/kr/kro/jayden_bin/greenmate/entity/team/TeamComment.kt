@@ -24,11 +24,11 @@ class TeamComment(
     @Column(updatable = false, nullable = false)
     val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", updatable = false)
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
     val user: User,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", updatable = false)
+    @JoinColumn(name = "team_id", updatable = false, nullable = false)
     val team: Team,
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "clob")
     val content: String,
 ) : BaseTimeEntity()

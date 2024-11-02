@@ -6,22 +6,22 @@ import kr.kro.jayden_bin.greenmate.controller.user.response.NicknameDuplicateChe
 import kr.kro.jayden_bin.greenmate.controller.user.response.ServiceTokensResponse
 import kr.kro.jayden_bin.greenmate.service.UserService
 import org.springframework.http.HttpStatus.CREATED
-import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
-@Controller("/api/v1/users")
+@RestController
+@RequestMapping("/api/v1/users")
 class UserController(
     private val userService: UserService,
 ) {
-    @ResponseStatus(NO_CONTENT)
     @GetMapping("/nickname-duplicate")
     fun checkNicknameDuplicate(
         @RequestParam

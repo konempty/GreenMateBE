@@ -29,6 +29,12 @@ class UserService(
         signUpRequest: SignUpRequest,
         profileImage: MultipartFile?,
     ): ServiceTokensResponse {
+        if (userRepository.existsByNickname(signUpRequest.nickname)) {
+            throw IllegalArgumentException("Nickname is already in use")
+        }
+        if (userRepository.existsByEmail(signUpRequest.email)) {
+            throw IllegalArgumentException("Email is already in use")
+        }
         val fileName = profileImage?.let { imageService.generateImageName(it) } ?: "defaultProfile.png"
         val hashedPassword = passwordEncoder.encode(signUpRequest.password) // 비밀번호 해싱
         val user =
@@ -40,11 +46,8 @@ class UserService(
                     profileImageName = fileName,
                 ),
             )
-        if (userRepository.existsByNickname(signUpRequest.nickname)) {
-            throw IllegalArgumentException("Nickname is already in use")
-        }
         profileImage?.let { imageService.upload(fileName, profileImage) }
-        return makeTokens(user.id)
+        return makeTokens(user)
     }
 
     @Transactional(readOnly = true)
@@ -52,7 +55,7 @@ class UserService(
         val user =
             userRepository.findByEmail(request.email)?.takeIf { passwordEncoder.matches(request.password, it.password) }
                 ?: throw IllegalArgumentException("Invalid email or password")
-        return makeTokens(user.id)
+        return makeTokens(user)
     }
 
     @Transactional(readOnly = true)
@@ -65,14 +68,15 @@ class UserService(
         }
         val userId = jwtUtil.getUserId(jwtUtil.refreshKey, refreshToken)
         val user = userRepository.findById(userId).get()
-        return makeTokens(user.id)
+        return makeTokens(user)
     }
 
-    private fun makeTokens(userId: Long): ServiceTokensResponse {
-        val accessToken = jwtUtil.generateAccessToken(userId)
+    private fun makeTokens(user: User): ServiceTokensResponse {
+        val profileImage = imageService.getDownloadUrl(user.profileImageName)
+        val accessToken = jwtUtil.generateAccessToken(user, profileImage)
         val rotateId = jwtUtil.generateRotateId()
-        val refreshToken = jwtUtil.generateRefreshToken(userId, rotateId)
-        jwtUtil.storeCachedRefreshTokenRotateId(userId, rotateId)
+        val refreshToken = jwtUtil.generateRefreshToken(user.id, rotateId)
+        jwtUtil.storeCachedRefreshTokenRotateId(user.id, rotateId)
         return ServiceTokensResponse(accessToken, refreshToken)
     }
 }

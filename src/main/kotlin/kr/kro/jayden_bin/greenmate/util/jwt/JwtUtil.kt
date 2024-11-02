@@ -4,6 +4,7 @@ import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import kr.kro.jayden_bin.greenmate.entity.user.User
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.redis.core.StringRedisTemplate
@@ -28,12 +29,16 @@ class JwtUtil(
     val log: Logger = LoggerFactory.getLogger(JwtUtil::class.java)
 
     fun generateAccessToken(
-        userId: Long,
+        user: User,
+        profileImageUrl: String,
         expirationTime: Long = accessTokenExpirationTime,
     ): String =
         generateJwtToken(
             mapOf(
-                "userId" to userId.toString(),
+                "email" to user.email,
+                "userId" to user.id.toString(),
+                "nickname" to user.nickname,
+                "profileImageUrl" to profileImageUrl,
             ),
             expirationTime,
             accessKey,

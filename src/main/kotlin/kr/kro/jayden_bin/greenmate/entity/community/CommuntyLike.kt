@@ -20,13 +20,13 @@ import kr.kro.jayden_bin.greenmate.entity.user.User
 @SequenceGenerator(name = "COMMUNITY_LIKE_SEQ_GENERATOR", sequenceName = "COMMUNITY_LIKE_SEQ", initialValue = 1, allocationSize = 1)
 class CommunityLike(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMUNITY_IMAGE_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMUNITY_LIKE_SEQ_GENERATOR")
     @Column(updatable = false, nullable = false)
     val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_id", updatable = false)
+    @JoinColumn(name = "community_id", updatable = false, nullable = false)
     val community: Community,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", updatable = false)
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
     val user: User,
 ) : BaseTimeEntity()

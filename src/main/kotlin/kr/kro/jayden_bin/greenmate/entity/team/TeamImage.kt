@@ -23,7 +23,7 @@ class TeamImage(
     @Column(updatable = false, nullable = false)
     val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", updatable = false)
+    @JoinColumn(name = "team_id", updatable = false, nullable = false)
     val team: Team,
     @Column(length = 50, nullable = false)
     val fileName: String,

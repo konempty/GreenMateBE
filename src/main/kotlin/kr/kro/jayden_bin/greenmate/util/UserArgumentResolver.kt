@@ -24,11 +24,7 @@ class UserArgumentResolver : HandlerMethodArgumentResolver {
         return if (authentication.isAuthenticated && authentication.principal is User) {
             authentication.principal as User
         } else {
-            throw AdminUnsupportedOperationException("User is not authenticated")
+            throw HttpException(HttpStatus.UNAUTHORIZED, "인증정보가 없습니다.")
         }
     }
 }
-
-class AdminUnsupportedOperationException(
-    message: String?,
-) : HttpException(HttpStatus.INTERNAL_SERVER_ERROR, message)

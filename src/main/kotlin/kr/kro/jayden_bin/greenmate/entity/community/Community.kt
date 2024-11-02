@@ -24,10 +24,10 @@ class Community(
     @Column(updatable = false, nullable = false)
     val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", updatable = false)
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
     val user: User,
-    @Column(length = 50, nullable = false, updatable = false, unique = true)
+    @Column(length = 50, nullable = false, updatable = false)
     val title: String,
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "clob")
     val description: String,
 ) : BaseTimeEntity()
