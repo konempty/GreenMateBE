@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: oracle
+    database-platform: org.hibernate.dialect.OracleDialect
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        spatial:
+          connection_finder: kr.kro.jayden_bin.greenmate.config.ConnectionFinder
+        default_batch_fetch_size: 100
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: 8
+logging:
+  level:
+    org:
+      hibernate: info
