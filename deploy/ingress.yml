@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 50m
 spec:
   rules:
-    - host: green-mat-api.jayden-bin.kro.kr
+    - host: green-mate-api.jayden-bin.kro.kr
       http:
         paths:
           - path: /api/*
