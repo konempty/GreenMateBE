@@ -53,17 +53,17 @@ GreenMate는 환경운동가들을 위한 커뮤니티 플랫폼으로, 환경�
 ### 백엔드 실행
 1. 레포지토리 클론:
    ```bash
-    git clone https://github.com/konempty/GreenMateBE.git
+   git clone https://github.com/konempty/GreenMateBE.git
    ```
-2.	필요한 환경 변수 설정 (application.yml).
-3.	Gradle을 사용하여 애플리케이션 빌드 및 실행:
+2. 필요한 환경 변수 설정 (application.yml).
+3. Gradle을 사용하여 애플리케이션 빌드 및 실행:
    ```bash
-    ./gradlew bootRun
+   ./gradlew bootRun
    ```
 
 ## API 문서
 
 Swagger를 사용하여 API 문서를 제공합니다. 백엔드 서버 실행 후 다음 경로에서 API 문서를 확인할 수 있습니다:
-```
-    http://localhost:8080/swagger-ui.html
-```
+   ```
+   http://localhost:8080/swagger-ui.html
+   ```
