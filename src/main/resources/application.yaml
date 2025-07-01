@@ -12,6 +12,9 @@ spring:
   cloud:
     compatibility-verifier:
       enabled: false
+    aws:
+      s3:
+        path-style-access-enabled: true
   threads:
     virtual:
       enabled: true
